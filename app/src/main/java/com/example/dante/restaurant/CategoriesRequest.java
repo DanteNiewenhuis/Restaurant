@@ -18,25 +18,21 @@ import java.util.ArrayList;
 
 public class CategoriesRequest implements Response.Listener<JSONObject>, Response.ErrorListener {
     private Context context;
-    private String url = "https://resto.mprog.nl/categories";
     private Callback activity;
 
-    public interface  Callback {
+    public interface Callback {
         void gotCategories(ArrayList<String> categories);
         void gotCategoriesError(String message);
     }
 
     public CategoriesRequest(Context context) {
         this.context = context;
-        getCategories(activity);
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.d("ErrorResponse", "init");
 
-
-        //TODO real error message
         activity.gotCategoriesError(error.getMessage());
     }
 
@@ -47,11 +43,20 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
         ArrayList<String> categories = new ArrayList<>();
         try {
             JSONArray mJsonArray = response.getJSONArray("categories");
+            Log.d("Response", "got Jsomn array");
 
+            if (mJsonArray == null) {
+                Log.d("Response", "array is null");
+            }
+            assert mJsonArray != null;
             for (int i = 0; i < mJsonArray.length(); i++) {
+                Log.d("Response", "add");
                 categories.add(mJsonArray.getString(i));
             }
 
+            if (activity == null) {
+                Log.d("Response", "activity is null");
+            }
             activity.gotCategories(categories);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -59,11 +64,12 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
 
     }
 
-    private void getCategories(Callback activity) {
+    public void getCategories(Callback activity) {
         Log.d("getCategories", "init");
         this.activity = activity;
         RequestQueue queue = Volley.newRequestQueue(context);
 
+        String url = "https://resto.mprog.nl/categories";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, this, this);
         queue.add(jsonObjectRequest);
 

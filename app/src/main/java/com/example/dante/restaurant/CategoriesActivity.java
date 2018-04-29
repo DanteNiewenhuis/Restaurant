@@ -1,7 +1,11 @@
 package com.example.dante.restaurant;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,6 +19,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         CategoriesRequest request = new CategoriesRequest(this);
+        request.getCategories(this);
     }
 
     @Override
@@ -22,6 +27,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categories);
         ListView categories_list = findViewById(R.id.categorie_list);
         categories_list.setAdapter(adapter);
+        categories_list.setOnItemClickListener(new ListItemClickListener());
 
     }
 
@@ -29,5 +35,16 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
     public void gotCategoriesError(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    private class ListItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.d("onItemClick", (String) parent.getItemAtPosition(position));
+            Intent intent = new Intent(CategoriesActivity.this, MenuActivity.class);
+            intent.putExtra("category", (String) parent.getItemAtPosition(position));
+
+            startActivity(intent);
+        }
     }
 }
