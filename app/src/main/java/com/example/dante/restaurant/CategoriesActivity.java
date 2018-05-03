@@ -25,6 +25,8 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
     @Override
     public void gotCategories(ArrayList<String> categories) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categories);
+
+        // set the adapter and the itemCleickListener
         ListView categories_list = findViewById(R.id.categorie_list);
         categories_list.setAdapter(adapter);
         categories_list.setOnItemClickListener(new ListItemClickListener());
@@ -33,6 +35,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
 
     @Override
     public void gotCategoriesError(String message) {
+        // send a message if an error has occurred
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
     }
@@ -40,7 +43,6 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
     private class ListItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Log.d("onItemClick", (String) parent.getItemAtPosition(position));
             Intent intent = new Intent(CategoriesActivity.this, MenuActivity.class);
             intent.putExtra("category", (String) parent.getItemAtPosition(position));
 

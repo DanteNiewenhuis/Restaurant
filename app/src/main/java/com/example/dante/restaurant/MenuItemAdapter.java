@@ -29,18 +29,22 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem>{
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.menu_item, parent, false);
         }
 
+        // get the info of the item
         MenuItem item = items.get(position);
         String name = item.getName();
         String imageUrl = item.getImageUrl();
         String price = "€" + item.getPrice();
 
+        // get the views
         TextView item_name = convertView.findViewById(R.id.item_name);
         TextView item_price = convertView.findViewById(R.id.item_price);
         ImageView item_image = convertView.findViewById(R.id.item_image);
 
+        // set the info from the item to the views
         item_name.setText(name);
         item_price.setText(price);
 
+        // load the image through Picasso
         Picasso.get().load(imageUrl).into(item_image);
 
         return convertView;

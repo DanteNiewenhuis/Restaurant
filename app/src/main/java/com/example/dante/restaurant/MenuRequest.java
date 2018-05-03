@@ -47,13 +47,12 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
 
     @Override
     public void onResponse(JSONObject response) {
-        Log.d("MenuResponse", "init");
-
         String name;
         String description;
         String imageUrl;
         String category;
         double price;
+
         ArrayList<MenuItem> items = new ArrayList<>();
         try {
             JSONArray mJsonArray = response.getJSONArray("items");
@@ -63,12 +62,14 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
                 JSONObject item = mJsonArray.getJSONObject(i);
 
                 if (this.category.equals(item.getString("category"))) {
+                    // get all the info from the JSonArray
                     name = item.getString("name");
                     description = item.getString("description");
                     imageUrl = item.getString("image_url");
                     category = item.getString("category");
                     price = item.getDouble("price");
 
+                    // create a new MenuItem and add it to items
                     items.add(new MenuItem(name, description, imageUrl, category, price));
                 }
             }

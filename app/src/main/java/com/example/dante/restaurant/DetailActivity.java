@@ -21,20 +21,22 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         MenuItem item = (MenuItem) intent.getSerializableExtra("item");
 
+        // get the info form the Menuitem
         String name = item.getName();
         String description = item.getDescription();
         String imageUrl = item.getImageUrl();
         String price = "€" + item.getPrice();
 
+        // get the views
         TextView name_detail = findViewById(R.id.name_detail);
         TextView description_detail = findViewById(R.id.description_detail);
         TextView price_detail = findViewById(R.id.price_detail);
         ImageView image_detail = findViewById(R.id.image_detail);
 
+        // set the info in the views
         name_detail.setText(name);
         description_detail.setText(description);
         price_detail.setText(price);
-
         Picasso.get().load(imageUrl).into(image_detail);
     }
 }

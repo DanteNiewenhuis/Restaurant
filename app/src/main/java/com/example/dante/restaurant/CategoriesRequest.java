@@ -1,8 +1,6 @@
 package com.example.dante.restaurant;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -31,31 +29,18 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.d("ErrorResponse", "init");
-
         activity.gotCategoriesError(error.getMessage());
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        Log.d("Response", "init");
-
         ArrayList<String> categories = new ArrayList<>();
         try {
             JSONArray mJsonArray = response.getJSONArray("categories");
-            Log.d("Response", "got Jsomn array");
 
-            if (mJsonArray == null) {
-                Log.d("Response", "array is null");
-            }
             assert mJsonArray != null;
             for (int i = 0; i < mJsonArray.length(); i++) {
-                Log.d("Response", "add");
                 categories.add(mJsonArray.getString(i));
-            }
-
-            if (activity == null) {
-                Log.d("Response", "activity is null");
             }
             activity.gotCategories(categories);
         } catch (JSONException e) {
@@ -65,10 +50,10 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
     }
 
     public void getCategories(Callback activity) {
-        Log.d("getCategories", "init");
         this.activity = activity;
         RequestQueue queue = Volley.newRequestQueue(context);
 
+        // send a request to the api to get the categories
         String url = "https://resto.mprog.nl/categories";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, this, this);
         queue.add(jsonObjectRequest);

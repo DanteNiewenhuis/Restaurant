@@ -21,14 +21,16 @@ public class MenuActivity extends AppCompatActivity implements MenuRequest.Callb
         Intent intent = getIntent();
         String category = (String)intent.getSerializableExtra("category");
 
+        // get the menu from the api
         MenuRequest request = new MenuRequest(this, category);
         request.getMenuItems(this);
     }
 
     @Override
     public void gotMenu(ArrayList<MenuItem> items) {
-        Log.d("gotMenu", "init");
         MenuItemAdapter adapter = new MenuItemAdapter(this, R.layout.menu_item, items);
+
+        // set the adapter and the ItemListener of the listview
         ListView item_list = findViewById(R.id.item_list);
         item_list.setAdapter(adapter);
         item_list.setOnItemClickListener(new ListItemClickListener());
@@ -36,7 +38,6 @@ public class MenuActivity extends AppCompatActivity implements MenuRequest.Callb
 
     @Override
     public void gotMenuError(String message) {
-        Log.d("gotMenuError", "init");
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
     }
